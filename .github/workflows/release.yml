@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test
+        shell: pwsh
+        run: python -m unittest discover -s tests -v
+      - name: Build package
+        shell: pwsh
+        run: python build_package.py
+      - name: Validate archive
+        shell: pwsh
+        run: python -m unittest tests.test_package -v
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create $env:GITHUB_REF_NAME
+          dist/MO2-XInput-Controller-v0.1.0.zip
+          dist/MO2-XInput-Controller-v0.1.0.zip.sha256
+          --generate-notes
+          --verify-tag

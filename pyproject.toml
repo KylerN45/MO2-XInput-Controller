@@ -1,0 +1,17 @@
+[build-system]
+requires = []
+build-backend = "build_backend"
+backend-path = ["."]
+
+[project]
+name = "mo2-xinput-controller"
+version = "0.1.0"
+description = "XInput controller support as a standalone Mod Organizer 2 Python plugin"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "KylerNyhagen / KylerN45" }]
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
